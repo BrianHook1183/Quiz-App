@@ -3,9 +3,39 @@ h1, h2 {
 }
 
 section {
+    display: flex;
+    flex-direction: column;
     border: 2px solid black;
     min-height: 800px;
     margin: 10px 80px;
+}
+
+.top-part {
+    height: 300px;
+    margin: 0px 80px;
+    background-color: aliceblue;
+}
+.start-button {
+    color: white;
+    padding: 15px 32px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    width: 200px;
+}
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* text-align: center; */
+}
+
+.stats {
+    margin: 0px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 .q-a-box {
@@ -15,4 +45,17 @@ section {
 
 fieldset {
     border: 0;
+}
+
+legend {
+    padding: 20px 0px;
+}
+
+label {
+    line-height: 25px;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
 }
