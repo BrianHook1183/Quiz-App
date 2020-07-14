@@ -1,0 +1,8 @@
+h1, h2 {
+    text-align: center;
+}
+section {
+    border: 2px solid black;
+    min-height: 800px;
+    margin: 10px 80px;
+}
