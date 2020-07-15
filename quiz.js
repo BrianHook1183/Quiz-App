@@ -96,7 +96,7 @@ function startNewQuiz() {
   clearCounterVariables();
   renderQuestionPageHtml();
   renderNextQuestion();
-  // need to bring in question #1
+  handleSubmitButton();
 }
 
 function clearCounterVariables() {
@@ -144,7 +144,7 @@ function renderNextQuestion() {
       <legend>${question}</legend>
       <div class="js-options">
       </div>
-      <button type = "submit">Submit</button>
+      <button type = "submit" class="js-submit-answer">Submit</button>
   </fieldset>
   </form>`);
   $(".q-a-box").html(formAndQuestion);
@@ -160,7 +160,6 @@ function renderOptions() {
         <label for="option${i+1}"> ${question.options[i]}</label><br/>`
     );
   }
-
 }
 
 
@@ -172,12 +171,32 @@ function renderOptions() {
 
 
 
+function handleSubmitButton() {
+  $('main').on('click', '.js-submit-answer', event => {
+    event.preventDefault();
+    console.log('handleSubmitButton ran');
+    let userAnswer = $("input[name=options]:checked").val();
+    console.log('the users answer is '+userAnswer);
+    // if (!userAnswer) {
+    //   alert("Choose an option");
+    //   return;
+    // }
+    if (userAnswer === STORE[currentQuestion].answer){
+      correctAnswer();
+    } else {
+      wrongAnswer();
+    }
+  })
+}
+
+function correctAnswer() {
+  console.log('correctAnswer ran');
+}
 
 
-
-
-
-
+function wrongAnswer() {
+  console.log('wrongAnswer ran');
+}
 
 
 

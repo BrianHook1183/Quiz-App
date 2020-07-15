@@ -9,6 +9,16 @@ section {
     min-height: 800px;
     margin: 10px 80px;
 }
+@media only screen and (max-width: 600px) {
+    section {
+      margin: 10px 10px
+    }
+  }
+@media only screen and (min-width: 1200px) {
+    section {
+      margin: 10px 300px
+    }
+  }
 
 .top-part {
     height: 300px;
