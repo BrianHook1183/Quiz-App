@@ -17,7 +17,8 @@
 // on submitting the last question, user needs to be led to results view, whiich shows total number correct out of total questions, with percentage correct. Button should be to restart which is indentical to the start button.
 
 const STORE = {
-  questions: [//1
+  questions: [
+    //1
     {
       question: "What is a prime lens?",
       options: [
@@ -52,8 +53,12 @@ const STORE = {
     },
     //4
     {
-      question: "What does ISO stand for??", 
-      options: ["Intentional Saturation Overexposure", "Image Shutter Open", "International Sensitivity Omnipotence", "None of the above"],
+      question: "What does ISO stand for?", 
+      options: [
+      "Intentional Saturation Overexposure", 
+      "Image Shutter Open", 
+      "International Sensitivity Omnipotence", 
+      "None of the above"],
       answer: "None of the above"
     },
     //5
@@ -71,6 +76,10 @@ const STORE = {
   // currentQuestion: 0,
   // score: 0
 };
+
+// Counting variables to loop through STORE.questions and keep track of current user score
+let score = 0;
+let questionNumber = 1;
 
 
 
@@ -95,13 +104,13 @@ function startNewQuiz() {
 }
 
 function clearCounterVariables() {
+  score = 0;
+  questionNumber = 1;
   console.log('clearCounterVariables ran');
-  // need to clear all counter variables
 }
 
 function renderQuestionPageHtml() {
   console.log('renderQuestionPageHtml ran');
-  //need to bring in new html
   const questionHtml = $(`
   <section class="question-page">
   <div class="top-part centered">
@@ -109,8 +118,8 @@ function renderQuestionPageHtml() {
       <p>(image will go here)<p><!-- replace with image -->
   </div>
   <div class="stats">
-      <span>Question:  1 / 5</span>
-      <span>Score:  0</span>
+      <span>Question:  ${questionNumber} / ${STORE.questions.length}</span>
+      <span>Score:  ${score}</span>
   </div>
   <div class="q-a-box">
       <form>
