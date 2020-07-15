@@ -1,20 +1,20 @@
-// User needs to be able to click start button to initiate quiz.
 
 // quiz view needs to initially show that user is on 1 / x questions, and their score so far is 0. 
 
-// user needs to be able to choose one option only, and then click submit.
-
 // on submit, apropriate message of "correct" or "wrong" needs to be displayed on the same page
-
 // still on same page, correct answer should be changed to green text, and if a wrong answer was submitted, that needs to be changed to red text color . 
-
 // still on same page, aggregate score should be updated, and question number should remain the same
-
 // still on same page, Submit button needs to change into a Next button
 
 // on Next click, next question needs to populate with the correct question number/progress, as well as reset result message od correct/wrong
 
 // on submitting the last question, user needs to be led to results view, whiich shows total number correct out of total questions, with percentage correct. Button should be to restart which is indentical to the start button.
+
+//TO DO: 
+// 1) consolidate STORE.lenghth into a global variable at top that is reused later on
+// 2) figure out better way of not-rerendering html after each question
+// 3) 
+
 
 const STORE = [
     //1
@@ -115,24 +115,25 @@ function clearCounterVariables() {
 
 function renderQuestionPageHtml() {
   console.log('renderQuestionPageHtml ran');
-  const questionHtml = $(`
-  <section class="question-page">
-  <div class="top-part centered">
+  const questionHtml = $(
+  `<section class="question-page">
+    <div class="top-part centered">
       <h2>Correct! / Wrong</h2>
       <p>(image will go here)<p><!-- replace with image -->
-  </div>
-  <div class="stats">
+    </div>
+    <div class="stats">
       <span>Question:  ${currentQuestion+1} / ${STORE.length}</span>
       <span>Score:  ${score}</span>
-  </div>
-  <div class="q-a-box">
-  </div>
-  <div class="centered">
+    </div>
+    <div class="q-a-box">
+    </div>
+    <div class="centered">
       <br>
       <span>...Progress Bar...</span><!-- replace with css widths and div color -->
-  </div>
-</section>`);
-$("main").html(questionHtml);
+    </div>
+  </section>`
+  );
+  $("main").html(questionHtml);
 }
 
 function renderNextQuestion() {
@@ -191,18 +192,54 @@ function handleSubmitButton() {
 
 function correctAnswer() {
   console.log('correctAnswer ran');
+  score++;
+  currentQuestion++;
+  // make text green of correct answer by inserting class
+  //show lens image with Correct! in top half
+  nextStep();
 }
-
 
 function wrongAnswer() {
   console.log('wrongAnswer ran');
+  currentQuestion++;
+  // make selected wrong answer red
+  // make text green of correct answer by inserting class
+  // show cracked lens image with Wrong in top half
+  nextStep();
 }
 
 
 
 
+// temporary while i figure out submit/next button
+function nextStep() { 
+  if (currentQuestion < STORE.length) {
+    renderQuestionPageHtml(); // It would be more efficient if I did not run this each time, but for the moment it is necessary to get stats to update. I can pull those out and have them rendered on their own or with renderNextQuestion
+    renderNextQuestion();
+    // if currentQuestion = STORE.length, then renderQuestionPageHtml()
+  } else {
+    renderResultsPageHtml();
+    }
+
+}
 
 
+function renderResultsPageHtml() {
+  scorePercent = Math.round(score/(STORE.length)*100);
+  const resultsHtml = $(`
+  <section class="results-page">
+    <div class="top-part centered">
+      <h2>Results:</h2>
+      <p>${score}/${STORE.length} Correct=  ${scorePercent}%</p>
+      <p>Would you like to try again?</p>
+    </div>
+    <div class="centered">
+      <button class="start-button">Restart</button>
+    </div>
+  </section>`
+  );
+  $("main").html(resultsHtml);
+}
 
 
 
