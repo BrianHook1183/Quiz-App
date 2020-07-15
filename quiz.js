@@ -105,6 +105,14 @@ function clearCounterVariables() {
   console.log('clearCounterVariables ran');
 }
 
+
+
+
+
+
+
+
+
 function renderQuestionPageHtml() {
   console.log('renderQuestionPageHtml ran');
   const questionHtml = $(`
@@ -130,24 +138,54 @@ $("main").html(questionHtml);
 function renderNextQuestion() {
   console.log('renderNextQuestion ran');
   let question= STORE[currentQuestion].question;
-  const questionForm = $(`
+  const formAndQuestion = $(`
   <form>
   <fieldset>
       <legend>${question}</legend>
-      <input type="radio" id="option1" name="response" value="1">
-      <label for="option1">option1</label><br>
-      <input type="radio" id="option2" name="response" value="2">
-      <label for="option2">option2</label><br>
-      <input type="radio" id="option3" name="response" value="3">
-      <label for="option3">option3</label><br>
-      <input type="radio" id="option4" name="response" value="4">
-      <label for="option4">option4</label><br>
+      <div class="js-options">
+      </div>
       <button type = "submit">Submit</button>
   </fieldset>
-</form>`);
-$(".q-a-box").html(questionForm);
-  // need to jquery in correct content
+  </form>`);
+  $(".q-a-box").html(formAndQuestion);
+  renderOptions();
 }
+
+function renderOptions() {
+  let question= STORE[currentQuestion];
+  for(let i=0; i < question.options.length; i++)
+  {
+    $('.js-options').append(`
+        <input type = "radio" name="options" id="option${i+1}" value= "${question.options[i]}" tabindex ="${i+1}"> 
+        <label for="option${i+1}"> ${question.options[i]}</label><br/>`
+    );
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
