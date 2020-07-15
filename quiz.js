@@ -16,8 +16,7 @@
 
 // on submitting the last question, user needs to be led to results view, whiich shows total number correct out of total questions, with percentage correct. Button should be to restart which is indentical to the start button.
 
-const STORE = {
-  questions: [
+const STORE = [
     //1
     {
       question: "What is a prime lens?",
@@ -72,14 +71,11 @@ const STORE = {
       ],
       answer: "d) Both A and B"
     },
-  ],
-  // currentQuestion: 0,
-  // score: 0
-};
+];
 
 // Counting variables to loop through STORE.questions and keep track of current user score
 let score = 0;
-let questionNumber = 1;
+let currentQuestion = 0;
 
 
 
@@ -105,7 +101,7 @@ function startNewQuiz() {
 
 function clearCounterVariables() {
   score = 0;
-  questionNumber = 1;
+  currentQuestion = 0;
   console.log('clearCounterVariables ran');
 }
 
@@ -118,24 +114,10 @@ function renderQuestionPageHtml() {
       <p>(image will go here)<p><!-- replace with image -->
   </div>
   <div class="stats">
-      <span>Question:  ${questionNumber} / ${STORE.questions.length}</span>
+      <span>Question:  ${currentQuestion+1} / ${STORE.length}</span>
       <span>Score:  ${score}</span>
   </div>
   <div class="q-a-box">
-      <form>
-          <fieldset>
-              <legend>This is a sample question, do you know what the answer is?</legend>
-              <input type="radio" id="option1" name="response" value="1">
-              <label for="option1">option1</label><br>
-              <input type="radio" id="option2" name="response" value="2">
-              <label for="option2">option2</label><br>
-              <input type="radio" id="option3" name="response" value="3">
-              <label for="option3">option3</label><br>
-              <input type="radio" id="option4" name="response" value="4">
-              <label for="option4">option4</label><br>
-              <button type = "submit">Submit</button>
-          </fieldset>
-      </form>
   </div>
   <div class="centered">
       <br>
@@ -147,6 +129,23 @@ $("main").html(questionHtml);
 
 function renderNextQuestion() {
   console.log('renderNextQuestion ran');
+  let question= STORE[currentQuestion].question;
+  const questionForm = $(`
+  <form>
+  <fieldset>
+      <legend>${question}</legend>
+      <input type="radio" id="option1" name="response" value="1">
+      <label for="option1">option1</label><br>
+      <input type="radio" id="option2" name="response" value="2">
+      <label for="option2">option2</label><br>
+      <input type="radio" id="option3" name="response" value="3">
+      <label for="option3">option3</label><br>
+      <input type="radio" id="option4" name="response" value="4">
+      <label for="option4">option4</label><br>
+      <button type = "submit">Submit</button>
+  </fieldset>
+</form>`);
+$(".q-a-box").html(questionForm);
   // need to jquery in correct content
 }
 
