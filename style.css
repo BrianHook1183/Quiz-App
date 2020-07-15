@@ -12,7 +12,7 @@ section {
 
 .top-part {
     height: 300px;
-    margin: 0px 80px;
+    margin: 20px 80px;
     background-color: aliceblue;
 }
 .start-button {
@@ -28,7 +28,7 @@ section {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* text-align: center; */
+    text-align: center;
 }
 
 .stats {
