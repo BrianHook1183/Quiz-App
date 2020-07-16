@@ -53,6 +53,14 @@ section {
     margin: 0px 80px;
 }
 
+.wrong-answer {
+    color: red;
+}
+
+.correct-answer {
+    color: green;
+}
+
 fieldset {
     border: 0;
 }

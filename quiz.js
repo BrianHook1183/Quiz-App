@@ -10,6 +10,11 @@
 
 // on submitting the last question, user needs to be led to results view, whiich shows total number correct out of total questions, with percentage correct. Button should be to restart which is indentical to the start button.
 
+//  Bonus features:
+// 1) Add incorrect questions to an array and then output a study guide on results page.
+// 2) make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
+// 3)
+
 //TO DO: 
 // 1) consolidate STORE.lenghth into a global variable at top that is reused later on
 // 2) figure out better way of not-rerendering html after each question
@@ -76,9 +81,6 @@ const STORE = [
 // Counting variables to loop through STORE.questions and keep track of current user score
 let score = 0;
 let currentQuestion = 0;
-
-
-
 
 
 
@@ -161,34 +163,38 @@ function handleSubmitButton() {
     console.log('handleSubmitButton ran');
     let userAnswer = $("input[name=options]:checked").val();
     console.log('the users answer is '+userAnswer);
-    // if (!userAnswer) {
-    //   alert("Choose an option");
-    //   return;
-    // }
+    if (!userAnswer) {
+      alert("You must select your best guess before moving on!");
+      return;
+    }
     if (userAnswer === STORE[currentQuestion].answer){
-      correctAnswer();
+      // correctAnswer();
+      console.log('correctAnswer ran and the userAnswer was ' + userAnswer);
+      score++;
+      currentQuestion++;
+      // make text green for correct answer by inserting class
+      $('label:contains(' +  userAnswer + ')').addClass('correct-answer')
+      //show lens image with Correct! in top half
+      // nextStep();
     } else {
-      wrongAnswer();
+      // wrongAnswer();
+      console.log('wrongAnswer ran');
+      currentQuestion++;
+      // make selected wrong answer red
+      // make text green of correct answer by inserting class
+      // show cracked lens image with Wrong in top half
+      // nextStep();
     }
   })
 }
 
+
+// pausing this function to try to add it inline with handleSubmitButton to make use of same variables already started
 function correctAnswer() {
-  console.log('correctAnswer ran');
-  score++;
-  currentQuestion++;
-  // make text green of correct answer by inserting class
-  //show lens image with Correct! in top half
-  nextStep();
 }
 
+// pausing this function to try to add it inline with handleSubmitButton to make use of same variables already started
 function wrongAnswer() {
-  console.log('wrongAnswer ran');
-  currentQuestion++;
-  // make selected wrong answer red
-  // make text green of correct answer by inserting class
-  // show cracked lens image with Wrong in top half
-  nextStep();
 }
 
 
@@ -235,9 +241,6 @@ function renderResultsPageHtml() {
 function initiateQuizApp() {
   console.log('initiateQuiz ran');
   handleStartClick();
-  //
-  //
-  //
 }
 
 $(initiateQuizApp);
