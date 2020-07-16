@@ -85,7 +85,7 @@ let currentQuestion = 0;
 
 // listens to "start" and "restart" buttons being clicked
 function handleStartClick() {
-  $('.start-button').on('click', (event) => {
+  $('body').on('click','.start-button', (event) => {
     startNewQuiz();
   });
   console.log('handleStartClick ran');
@@ -104,14 +104,6 @@ function clearCounterVariables() {
   currentQuestion = 0;
   console.log('clearCounterVariables ran');
 }
-
-
-
-
-
-
-
-
 
 function renderQuestionPageHtml() {
   console.log('renderQuestionPageHtml ran');
@@ -162,15 +154,6 @@ function renderOptions() {
     );
   }
 }
-
-
-
-
-
-
-
-
-
 
 function handleSubmitButton() {
   $('main').on('click', '.js-submit-answer', event => {
