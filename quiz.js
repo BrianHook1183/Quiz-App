@@ -100,6 +100,7 @@ function startNewQuiz() {
   renderQuestionPageHtml();
   renderNextQuestion();
   handleSubmitButton();
+  handleNextButton();
 }
 
 function clearCounterVariables() {
@@ -141,9 +142,11 @@ function renderNextQuestion() {
       <div class="js-options">
       </div>
       <button type = "submit" class="js-submit-answer">Submit</button>
+      <button type = "button" class="js-next-question">Next ~~></button>
   </fieldset>
   </form>`);
   $(".q-a-box").html(formAndQuestion);
+  $(".js-next-question").hide(); // hides next button
   renderOptions();
 }
 
@@ -164,12 +167,14 @@ function handleSubmitButton() {
     console.log('handleSubmitButton ran');
     const userAnswer = $("input[name=options]:checked").val();
     console.log('the users answer is '+userAnswer);
+    $(".js-next-question").show();
+    $(".js-submit-answer").hide();
     if (!userAnswer) {
       alert("You must select your best guess before moving on!");
       return;
     }
     if (userAnswer === STORE[currentQuestion].answer){
-      // correctAnswer();
+      // correctAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
       console.log('correctAnswer ran and the userAnswer was ' + userAnswer);
       score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
       // make text green for correct answer by inserting class
@@ -177,27 +182,28 @@ function handleSubmitButton() {
       // show Correct! message
       $('h2').text('That is Correct!');
       // to do: image
-      nextStep();
+      
     } else {
-      // wrongAnswer();
+      // wrongAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
       console.log('wrongAnswer ran');
       // make selected wrong answer red
       $('label:contains(' +  userAnswer + ')').addClass('wrong-answer')
       // show "wrong" message"
       $('h2').text('Wrongggggggg');
       // to do: image
-      nextStep();
     }
   })
 }
 
-// pausing this function to try to add it inline with handleSubmitButton to make use of same variables already started
-function correctAnswer() {
+function handleNextButton() {
+  $('main').on('click', '.js-next-question', event => {
+    console.log('next button clicked');
+    nextStep();
+  });
 }
 
-// pausing this function to try to add it inline with handleSubmitButton to make use of same variables already started
-function wrongAnswer() {
-}
+
+
 
 
 
