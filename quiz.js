@@ -113,9 +113,7 @@ function renderQuestionPageHtml() {
   console.log('renderQuestionPageHtml ran');
   const questionHtml = $(
   `<section class="question-page">
-    <div class="top-part centered">
-      <h2></h2>
-      <p>(image will go here)<p>
+    <div class="top-part centered js-feedback">
     </div>
     <div class="stats">
       <span>Question:  ${currentQuestion+1} / ${STORE.length}</span>
@@ -125,7 +123,7 @@ function renderQuestionPageHtml() {
     </div>
     <div class="centered">
       <br>
-      <span>...Progress Bar...</span><!-- replace with css widths and div color -->
+      <span>...Progress Bar...</span>
     </div>
   </section>`
   );
@@ -166,6 +164,7 @@ function handleSubmitButton() {
     event.preventDefault();
     console.log('handleSubmitButton ran');
     const userAnswer = $("input[name=options]:checked").val();
+    const realAnswer = STORE[currentQuestion].answer;
     console.log('the users answer is '+userAnswer);
     $(".js-next-question").show();
     $(".js-submit-answer").hide();
@@ -173,14 +172,14 @@ function handleSubmitButton() {
       alert("You must select your best guess before moving on!");
       return;
     }
-    if (userAnswer === STORE[currentQuestion].answer){
+    if (userAnswer === realAnswer){
       // correctAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
       console.log('correctAnswer ran and the userAnswer was ' + userAnswer);
       score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
       // make text green for correct answer by inserting class
       $('label:contains(' +  userAnswer + ')').addClass('correct-answer')
       // show Correct! message
-      $('h2').text('That is Correct!');
+      $('.js-feedback').html(`<h2>That is Correct!</h2>`);
       // to do: image
       
     } else {
@@ -188,8 +187,12 @@ function handleSubmitButton() {
       console.log('wrongAnswer ran');
       // make selected wrong answer red
       $('label:contains(' +  userAnswer + ')').addClass('wrong-answer')
-      // show "wrong" message"
-      $('h2').text('Wrongggggggg');
+      $('label:contains(' +  realAnswer + ')').addClass('correct-answer')
+      // show "wrong" message" and correct answer
+      $('.js-feedback').html(`
+        <h2>Wronggggg</h2>
+        <p>the answer is "${realAnswer}"<p>
+      `);
       // to do: image
     }
   })

@@ -59,6 +59,7 @@ section {
 
 .correct-answer {
     color: green;
+    font-weight: bold;
 }
 
 fieldset {
