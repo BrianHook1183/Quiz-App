@@ -29,8 +29,8 @@ const STORE = [
       options: [
         "The first lens you buy", 
         "A fixed focal length lens", 
-        "the lens that originally comes with a camera body as part of a kit", 
-        "a zoom lens that only covers the most used focal lengths"
+        "The lens that originally comes with a camera body as part of a kit", 
+        "A zoom lens that only covers the most used focal lengths"
       ],
       answer: "A fixed focal length lens"
     },
@@ -49,12 +49,12 @@ const STORE = [
     {
       question: "What is the Sunny 16 Rule?",
       options: [
-        "a method to determine the hours of usable daylight left", 
-        "a method to measure focal length by using a sundial", 
-        "a reminder to take at least 16 pictures when shooting towards harsh sunlight", 
-        "a method of estimating correct daylight exposures"
+        "A method to determine the hours of usable daylight left", 
+        "A method to measure focal length by using a sundial", 
+        "A reminder to take at least 16 pictures when shooting towards harsh sunlight", 
+        "A method of estimating correct daylight exposures"
       ],
-      answer: "a method of estimating correct daylight exposures"
+      answer: "A method of estimating correct daylight exposures"
     },
     //4
     {
@@ -75,7 +75,7 @@ const STORE = [
         "The time right around midday", 
         "Both A and B"
       ],
-      answer: "d) Both A and B"
+      answer: "Both A and B"
     },
 ];
 
