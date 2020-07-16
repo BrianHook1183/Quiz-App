@@ -1,25 +1,16 @@
-
-// quiz view needs to initially show that user is on 1 / x questions, and their score so far is 0. 
-
-// on submit, apropriate message of "correct" or "wrong" needs to be displayed on the same page
-// still on same page, correct answer should be changed to green text, and if a wrong answer was submitted, that needs to be changed to red text color . 
-// still on same page, aggregate score should be updated, and question number should remain the same
-// still on same page, Submit button needs to change into a Next button
-
-// on Next click, next question needs to populate with the correct question number/progress, as well as reset result message od correct/wrong
-
-// on submitting the last question, user needs to be led to results view, whiich shows total number correct out of total questions, with percentage correct. Button should be to restart which is indentical to the start button.
-
 //  Bonus features:
 // 1) Add incorrect questions to an array and then output a study guide on results page.
 // 2) make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
-// 3) add text enter at start for name. store variable and add to messages
+// 3) Progress bar
+// 4) add text enter at start for name. store variable and add to messages
+// 5) deactivate radio buttons after submit
 
 //TO DO: 
-// 1) consolidate STORE.lenghth into a global variable at top that is reused later on
 // 2) figure out better way of not-rerendering html after each question
 // 3) score++ should happen as an independent function so it updates on stats bar before moving to next questions
-// 4) bug on 2nd time through quiz. no userAnswers are stored. 
+// 4) bug on 2nd+ times through, counter is off. (check console)
+// 5) when f/2 is selected, 2 and 2.8 both get highlighted as ther wrong answer. Its because i'm using .contains(). need to find alternative. i think its .filter
+// 6) implement A11y, (tab is not working to go through options)
 
 
 const STORE = [
@@ -79,10 +70,12 @@ const STORE = [
     },
 ];
 
-// Counting variables to loop through STORE.questions and keep track of current user score
+// Global variables
+// dynamic:
 let score = 0;
 let currentQuestion = 0;
-
+// static:
+let totalQuestions = STORE.length;
 
 
 
@@ -116,7 +109,7 @@ function renderQuestionPageHtml() {
     <div class="top-part centered js-feedback">
     </div>
     <div class="stats">
-      <span>Question:  ${currentQuestion+1} / ${STORE.length}</span>
+      <span>Question:  ${currentQuestion+1} / ${totalQuestions}</span>
       <span>Score:  ${score}</span>
     </div>
     <div class="q-a-box">
@@ -177,17 +170,16 @@ function handleSubmitButton() {
       console.log('correctAnswer ran and the userAnswer was ' + userAnswer);
       score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
       // make text green for correct answer by inserting class
-      $('label:contains(' +  userAnswer + ')').addClass('correct-answer')
+      $('label:contains(' +  userAnswer + ')').addClass('correct-answer');
       // show Correct! message
       $('.js-feedback').html(`<h2>That is Correct!</h2>`);
       // to do: image
-      
     } else {
       // wrongAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
       console.log('wrongAnswer ran');
       // make selected wrong answer red
       $('label:contains(' +  userAnswer + ')').addClass('wrong-answer')
-      $('label:contains(' +  realAnswer + ')').addClass('correct-answer')
+      $('label:contains(' +  realAnswer + ')').addClass('correct-answer');
       // show "wrong" message" and correct answer
       $('.js-feedback').html(`
         <h2>Wronggggg</h2>
@@ -205,33 +197,24 @@ function handleNextButton() {
   });
 }
 
-
-
-
-
-
-
-// temporary while i figure out submit/next button
 function nextStep() { 
   currentQuestion++;
-  if (currentQuestion < STORE.length) {
+  if (currentQuestion < totalQuestions) {
     renderQuestionPageHtml(); // It would be more efficient if I did not run this each time, but for the moment it is necessary to get stats to update. I can pull those out and have them rendered on their own or with renderNextQuestion
     renderNextQuestion();
-    // if currentQuestion = STORE.length, then renderQuestionPageHtml()
   } else {
     renderResultsPageHtml();
     }
-
 }
 
 
 function renderResultsPageHtml() {
-  scorePercent = Math.round(score/(STORE.length)*100);
+  scorePercent = Math.round(score/(totalQuestions)*100);
   const resultsHtml = $(`
   <section class="results-page">
     <div class="top-part centered">
       <h2>Results:</h2>
-      <p>${score}/${STORE.length} Correct=  ${scorePercent}%</p>
+      <p>${score}/${totalQuestions} Correct=  ${scorePercent}%</p>
       <p>Would you like to try again?</p>
     </div>
     <div class="centered">
