@@ -13,12 +13,13 @@
 //  Bonus features:
 // 1) Add incorrect questions to an array and then output a study guide on results page.
 // 2) make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
-// 3)
+// 3) add text enter at start for name. store variable and add to messages
 
 //TO DO: 
 // 1) consolidate STORE.lenghth into a global variable at top that is reused later on
 // 2) figure out better way of not-rerendering html after each question
-// 3) 
+// 3) score++ should happen as an independent function so it updates on stats bar before moving to next questions
+// 4) bug on 2nd time through quiz. no userAnswers are stored. 
 
 
 const STORE = [
@@ -69,10 +70,10 @@ const STORE = [
     {
       question: "What period of daytime is best described by 'golden hour'?",
       options: [
-        "a) The time right after sunrise", 
-        "b) The time right before sunset", 
-        "c) The time right around midday", 
-        "d) Both A and B"
+        "The time right after sunrise", 
+        "The time right before sunset", 
+        "The time right around midday", 
+        "Both A and B"
       ],
       answer: "d) Both A and B"
     },
@@ -112,8 +113,8 @@ function renderQuestionPageHtml() {
   const questionHtml = $(
   `<section class="question-page">
     <div class="top-part centered">
-      <h2>Correct! / Wrong</h2>
-      <p>(image will go here)<p><!-- replace with image -->
+      <h2></h2>
+      <p>(image will go here)<p>
     </div>
     <div class="stats">
       <span>Question:  ${currentQuestion+1} / ${STORE.length}</span>
@@ -161,7 +162,7 @@ function handleSubmitButton() {
   $('main').on('click', '.js-submit-answer', event => {
     event.preventDefault();
     console.log('handleSubmitButton ran');
-    let userAnswer = $("input[name=options]:checked").val();
+    const userAnswer = $("input[name=options]:checked").val();
     console.log('the users answer is '+userAnswer);
     if (!userAnswer) {
       alert("You must select your best guess before moving on!");
@@ -170,24 +171,25 @@ function handleSubmitButton() {
     if (userAnswer === STORE[currentQuestion].answer){
       // correctAnswer();
       console.log('correctAnswer ran and the userAnswer was ' + userAnswer);
-      score++;
-      currentQuestion++;
+      score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
       // make text green for correct answer by inserting class
       $('label:contains(' +  userAnswer + ')').addClass('correct-answer')
-      //show lens image with Correct! in top half
-      // nextStep();
+      // show Correct! message
+      $('h2').text('That is Correct!');
+      // to do: image
+      nextStep();
     } else {
       // wrongAnswer();
       console.log('wrongAnswer ran');
-      currentQuestion++;
       // make selected wrong answer red
-      // make text green of correct answer by inserting class
-      // show cracked lens image with Wrong in top half
-      // nextStep();
+      $('label:contains(' +  userAnswer + ')').addClass('wrong-answer')
+      // show "wrong" message"
+      $('h2').text('Wrongggggggg');
+      // to do: image
+      nextStep();
     }
   })
 }
-
 
 // pausing this function to try to add it inline with handleSubmitButton to make use of same variables already started
 function correctAnswer() {
@@ -202,6 +204,7 @@ function wrongAnswer() {
 
 // temporary while i figure out submit/next button
 function nextStep() { 
+  currentQuestion++;
   if (currentQuestion < STORE.length) {
     renderQuestionPageHtml(); // It would be more efficient if I did not run this each time, but for the moment it is necessary to get stats to update. I can pull those out and have them rendered on their own or with renderNextQuestion
     renderNextQuestion();
