@@ -11,6 +11,7 @@
 // 4) bug on 2nd+ times through, counter is off. (check console)
 // 5) when f/2 is selected, 2 and 2.8 both get highlighted as ther wrong answer. Its because i'm using .contains(). need to find alternative. i think its .filter
 // 6) implement A11y, (tab is not working to go through options)
+// 7) you can dismiss no sleection method and still move on. 
 
 
 const STORE = [
