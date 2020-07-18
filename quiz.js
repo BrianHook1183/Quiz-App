@@ -9,7 +9,7 @@
 // 2) figure out better way of not-rerendering html after each question
 // 3) score++ should happen as an independent function so it updates on stats bar before moving to next questions
 // 5) when f/2 is selected, 2 and 2.8 both get highlighted as ther wrong answer. Its because i'm using .contains(). need to find alternative. i think its .filter
-// 6) implement A11y, (tab is not working to go through options)
+// 6) implement A11y
 
 
 const STORE = [
@@ -96,11 +96,11 @@ function initiateQuizApp() {
   });
 }
 
+// runs on start and restart button
 function startNewQuiz() {
   clearCounterVariables();
   renderQuestionPageHtml();
   renderNextQuestion();
-  handleSubmitButton();
 }
 
 function clearCounterVariables() {
