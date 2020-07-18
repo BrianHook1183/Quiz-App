@@ -77,30 +77,26 @@ let currentQuestion = 0;
 // static:
 let totalQuestions = STORE.length;
 
-// tip from a.byrd, make sure this only runs once, assign all listeners. Get in practice of doing this, if you only want a listener to run once, then it can't be embedded in functions that run multiple times. Or else my "next" button will have to listeners on it after quiz restart and questions start getting skipped. 
-// listens to "start" and "restart" buttons being clicked, listens to next button also. 
-function registerEvents() {
+
+// runs all listener functions
+function initiateQuizApp() {
+  console.log('initiateQuizApp ran');
+  // listen to "start" and "restart" buttons being clicked
   $('body').on('click','.start-button', function(event) {
+    console.log('Start button clicked and startNewQuiz ran');
     startNewQuiz();
   });
   $('main').on('click', '.js-next-question', event => {
-    console.log('next button clicked');
+    console.log('next button clicked and nextStep ran');
     nextStep();
-  })
-}
-
-
-
-// listens to "start" and "restart" buttons being clicked
-function handleStartClick() {
-  $('body').on('click','.start-button', (event) => {
-    startNewQuiz();
   });
-  console.log('handleStartClick ran');
+  $('main').on('click', '.js-submit-answer', event => {
+    console.log('submit button clicked and handleSubmitButton ran');
+    handleSubmitButton();
+  });
 }
 
 function startNewQuiz() {
-  console.log('startNewQuiz ran');
   clearCounterVariables();
   renderQuestionPageHtml();
   renderNextQuestion();
@@ -168,19 +164,17 @@ function renderOptions() {
 }
 
 function handleSubmitButton() {
-  $('main').on('click', '.js-submit-answer', event => {
     event.preventDefault();
-    console.log('handleSubmitButton ran');
     const userAnswerIndex = $("input[name=options]:checked").data("index-number");
     const userAnswerBool = STORE[currentQuestion].options[userAnswerIndex].isAnswer;
     const userAnswer = $("input[name=options]:checked").val();
-    console.log('the users answer is '+ userAnswerBool);
+    const realAnswer = STORE[currentQuestion].options[realAnswerIndex].option;
+    if (!userAnswer) {
+      alert("You must select your best guess before moving on!");
+      return;
+    }
     $(".js-next-question").show(); // show next button only after if alert has been satisfied
     $(".js-submit-answer").hide();
-        if (!userAnswer) {
-          alert("You must select your best guess before moving on!");
-          return;
-        }
     if (userAnswerBool){
       // correctAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
       console.log('correctAnswer ran');
@@ -192,18 +186,17 @@ function handleSubmitButton() {
       // to do: image
     } else {
       // wrongAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
-      console.log('wrongAnswer ran. and the correct answer index is: ' + realAnswerIndex);
+      console.log('wrongAnswer ran');
       // make selected wrong answer red
       $('label:contains(' +  userAnswer + ')').addClass('wrong-answer')
       $('label[data-index-number=' + realAnswerIndex +']').addClass('correct-answer');
       // show "wrong" message" and correct answer
       $('.js-feedback').html(`
         <h2>Wronggggg</h2>
-        <p>the answer is ""<p>
+        <p>the answer is "${realAnswer}"<p>
       `);
       // to do: image
     }
-  })
 }
 
 function nextStep() { 
@@ -241,10 +234,5 @@ function renderResultsPageHtml() {
 
 
 
-// runs all listener functions
-function initiateQuizApp() {
-  console.log('initiateQuiz ran');
-  registerEvents(); // contains listeners so they only run once
-}
 
 $(initiateQuizApp);
