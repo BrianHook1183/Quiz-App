@@ -1,15 +1,17 @@
-//  Bonus features:
-// 1) Add incorrect questions to an array and then output a study guide on results page.
-// 2) make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
-// 3) Progress bar
-// 4) add text enter at start for name. store variable and add to messages
-// 5) deactivate radio buttons after submit
-
 //TO DO: 
-// 2) figure out better way of not-rerendering html after each question
-// 3) score++ should happen as an independent function so it updates on stats bar before moving to next questions
-// 5) when f/2 is selected, 2 and 2.8 both get highlighted as ther wrong answer. Its because i'm using .contains(). need to find alternative. i think its .filter
-// 6) implement A11y
+// when f/2 is selected, 2 and 2.8 both get highlighted as ther wrong answer.
+// deactivate radio buttons after submit
+// no selection error message is not popping up and is causing an undefinied error in console
+// figure out better way of not-rerendering html after each question
+// score++ should happen as an independent function so it updates on stats bar before moving to next questions
+// implement A11y
+
+//BONUS FEATURES:
+// Add incorrect questions to an array and then output a study guide on results page.
+// make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
+// Progress bar
+// add text enter at start for name. store variable and add to messages
+
 
 
 const STORE = [
@@ -92,7 +94,7 @@ function initiateQuizApp() {
   });
   $('main').on('click', '.js-submit-answer', event => {
     console.log('submit button clicked and handleSubmitButton ran');
-    handleSubmitButton();
+      handleSubmitButton();
   });
 }
 
@@ -123,7 +125,7 @@ function renderQuestionPageHtml() {
     </div>
     <div class="centered">
       <br>
-      <span>...Progress Bar...</span>
+      <!--<span>...Progress Bar...</span>-->
     </div>
   </section>`
   );
@@ -153,7 +155,7 @@ function renderOptions() {
   for (let i=0; i < question.options.length; i++)
   {
     $('.js-options').append(`
-        <input type = "radio" name="options" id="option${i+1}" value= "${question.options[i].option}" data-index-number=${i} tabindex ="${i+1}"> 
+        <input type = "radio" name="options" id="option${i+1}" value= "${question.options[i].option}" data-index-number=${i} tabindex ="${i+1}" required> 
         <label data-index-number=${i} for="option${i+1}"> ${question.options[i].option}</label><br/>`
     );
     // finds the index of the correct answer
@@ -164,40 +166,44 @@ function renderOptions() {
 }
 
 function handleSubmitButton() {
-    event.preventDefault();
-    const userAnswerIndex = $("input[name=options]:checked").data("index-number");
-    const userAnswerBool = STORE[currentQuestion].options[userAnswerIndex].isAnswer;
-    const userAnswer = $("input[name=options]:checked").val();
-    const realAnswer = STORE[currentQuestion].options[realAnswerIndex].option;
-    if (!userAnswer) {
-      alert("You must select your best guess before moving on!");
-      return;
-    }
+  const userAnswerIndex = $("input[name=options]:checked").data("index-number");
+  const userAnswerBool = STORE[currentQuestion].options[userAnswerIndex].isAnswer;
+  const userAnswer = $("input[name=options]:checked").val();
+  const realAnswer = STORE[currentQuestion].options[realAnswerIndex].option;
+  event.preventDefault();
     $(".js-next-question").show(); // show next button only after if alert has been satisfied
     $(".js-submit-answer").hide();
     if (userAnswerBool){
-      // correctAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
-      console.log('correctAnswer ran');
-      score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
-      // make text green for correct answer by inserting class
-      $('label:contains(' +  userAnswer + ')').addClass('correct-answer');
-      // show Correct! message
-      $('.js-feedback').html(`<h2>That is Correct!</h2>`);
-      // to do: image
+      answerIsCorrect (userAnswer);
     } else {
-      // wrongAnswer(); // this function used to be seperate. included here because of variable difficulty. can still move back outside later
-      console.log('wrongAnswer ran');
-      // make selected wrong answer red
-      $('label:contains(' +  userAnswer + ')').addClass('wrong-answer')
-      $('label[data-index-number=' + realAnswerIndex +']').addClass('correct-answer');
-      // show "wrong" message" and correct answer
-      $('.js-feedback').html(`
-        <h2>Wronggggg</h2>
-        <p>the answer is "${realAnswer}"<p>
-      `);
-      // to do: image
-    }
+      answerIsWrong(userAnswerIndex, realAnswer);
+      }
 }
+
+function answerIsCorrect(userAnswer){
+  console.log('correctAnswer ran');
+  score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
+  // make text green for correct answer by inserting class
+  $('label:contains(' +  userAnswer + ')').addClass('correct-answer');
+  // show Correct! message
+  $('.js-feedback').html(`<h2>That is Correct!</h2>`);
+  // to do: image
+}
+
+function answerIsWrong(userAnswerIndex, realAnswer){
+  // variable difficulty. can still move back outside later
+  console.log('wrongAnswer ran');
+  // make selected wrong answer red
+  $('label[data-index-number=' + userAnswerIndex +']').addClass('wrong-answer')
+  $('label[data-index-number=' + realAnswerIndex +']').addClass('correct-answer');
+  // show "wrong" message" and correct answer
+  $('.js-feedback').html(`
+    <h2>Wronggggg</h2>
+    <p>the answer is "${realAnswer}"<p>
+  `);
+  // to do: image
+}
+
 
 function nextStep() { 
   currentQuestion++;
