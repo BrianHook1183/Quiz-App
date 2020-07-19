@@ -124,9 +124,10 @@ input {
 
 button {
     margin-top: 20px;
-    padding: 8px;
+    padding: 12px 0px;
     width: 100%;
     background-color: #ADD9FF;
     font-weight: bold;
     letter-spacing: 6px;
+    border-radius: 25px;
 }
