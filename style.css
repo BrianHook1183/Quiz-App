@@ -31,6 +31,11 @@ section {
     margin: 20px 80px;
     background-color: aliceblue;
 }
+@media only screen and (max-width: 480px) {
+    .top-part {
+      margin: 0px 10px
+    }
+  }
 
 .landing-page .top-part {
     background-color: grey;
@@ -72,10 +77,21 @@ section {
     align-items: flex-end;
     text-decoration: underline;
 }
+@media only screen and (max-width: 480px) {
+    .stats {
+      margin: 0px 10px
+    }
+  }
+
 
 .q-a-box {
     margin: 0px 80px;
 }
+@media only screen and (max-width: 480px) {
+    .q-a-box {
+      margin: 0px 10px
+    }
+  }
 
 .wrong-answer {
     color: red;
