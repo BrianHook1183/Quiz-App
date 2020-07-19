@@ -1,11 +1,9 @@
 //TO DO: 
 // high priority: implement A11y
 // low priority:  empty form submit is bringing up required warning on form but is causing a js error in console.
-// low priority:  figure out better way of not-rerendering html after each question
 // low priority:  clear up "question" variable and STORE parameter confusion
 
 //BONUS FEATURES:
-// deactivate radio buttons after submit
 // Add incorrect questions to an array and then output a study guide on results page.
 // Progress bar
 // add text form at start for name. store variable and add to messages
@@ -121,10 +119,6 @@ function renderQuestionPageHtml() {
     </div>
     <div class="q-a-box">
     </div>
-    <div class="centered">
-      <br>
-      <!--<span>...Progress Bar...</span>-->
-    </div>
   </section>`
   );
   $("main").html(questionHtml);
@@ -177,6 +171,8 @@ function handleSubmitButton() {
     } else {
       answerIsWrong(userAnswerIndex, realAnswer);
       }
+  // disables radio buttons after user submits answer
+  $("input[type=radio]").attr('disabled', true);
 }
 
 function answerIsCorrect(userAnswer){
@@ -198,13 +194,10 @@ function answerIsWrong(userAnswerIndex, realAnswer){
   // variable difficulty. can still move back outside later
   console.log('wrongAnswer ran');
   // make selected wrong answer red
-  $('label[data-index-number=' + userAnswerIndex +']').addClass('wrong-answer')
+  $('label[data-index-number=' + userAnswerIndex +']').addClass('wrong-answer');
   $('label[data-index-number=' + realAnswerIndex +']').addClass('correct-answer');
   // show "wrong" message" and correct answer
-  $('.js-feedback').html(`
-    <h2>Wronggggg</h2>
-    <p>the answer is "${realAnswer}"<p>
-  `);
+  $('.js-feedback').html(`<h2>Incorrect</h2><p>the answer is "${realAnswer}"</p>`);
   // to do: image
 }
 

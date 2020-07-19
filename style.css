@@ -2,6 +2,12 @@ h1, h2 {
     text-align: center;
 }
 
+.js-feedback h2, .js-feedback p {
+    background-color: white;
+    padding: 10px 40px;
+    font-weight: bold;
+}
+
 section {
     display: flex;
     flex-direction: column;
@@ -25,6 +31,24 @@ section {
     margin: 20px 80px;
     background-color: aliceblue;
 }
+
+.landing-page .top-part {
+    background-color: grey;
+    background-image: url('images/DSLR-Camera-PNG-File.png');
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    background-blend-mode: soft-light;
+}
+
+.question-page .top-part {
+    background-image: url('images/Video-Camera-Lens-PNG-Photos.png');
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+}
+
+
 .start-button {
     color: white;
     padding: 15px 32px;
