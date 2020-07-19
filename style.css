@@ -46,6 +46,7 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    text-decoration: underline;
 }
 
 .q-a-box {

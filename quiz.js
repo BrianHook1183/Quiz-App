@@ -1,6 +1,5 @@
 //TO DO: 
 // high priority: implement A11y
-// med priority:  score++ should happen as an independent function so it updates on stats bar before moving to next questions
 // low priority:  empty form submit is bringing up required warning on form but is causing a js error in console.
 // low priority:  figure out better way of not-rerendering html after each question
 // low priority:  clear up "question" variable and STORE parameter confusion
@@ -116,7 +115,7 @@ function renderQuestionPageHtml() {
   `<section class="question-page">
     <div class="top-part centered js-feedback">
     </div>
-    <div class="stats">
+    <div class="js-stats stats">
       <span>Question:  ${currentQuestion+1} / ${totalQuestions}</span>
       <span>Score:  ${score}</span>
     </div>
@@ -187,6 +186,11 @@ function answerIsCorrect(userAnswer){
   $('label:contains(' +  userAnswer + ')').addClass('correct-answer');
   // show Correct! message
   $('.js-feedback').html(`<h2>That is Correct!</h2>`);
+  // update score if correct to get instant feedback
+  $('.js-stats').html(`
+    <span>Question:  ${currentQuestion+1} / ${totalQuestions}</span>
+    <span>Score:  ${score}</span>`
+    );
   // to do: image
 }
 
