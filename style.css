@@ -5,11 +5,11 @@ h1, h2 {
 section {
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
+    border: 10px solid lightgrey;
     min-height: 800px;
     margin: 10px 80px;
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 900px) {
     section {
       margin: 10px 10px
     }
@@ -49,7 +49,7 @@ section {
 }
 
 .q-a-box {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     margin: 0px 80px;
 }
 
@@ -68,13 +68,40 @@ fieldset {
 
 legend {
     padding: 20px 0px;
+    font-weight: bold;
+    text-align: center;
 }
 
 label {
-    line-height: 25px;
+    line-height: 20px;
+    border: 1px solid lightgrey;
+    display: flex;
+    background-color: #F7F7F7;
+}
+label:focus{
+    background-color:aliceblue; /* not working */
+}
+label:hover {
+    background-color: aliceblue;
+  }
+label:active {
+    background-color: skyblue;
+  }
+
+label span {
+    margin: auto 0px;
+    padding: 12px 16px 12px 0px;
+}
+
+input {
+    margin: 20px;
 }
 
 button {
     margin-top: 20px;
+    padding: 8px;
     width: 100%;
+    background-color: #ADD9FF;
+    font-weight: bold;
+    letter-spacing: 6px;
 }

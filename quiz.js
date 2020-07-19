@@ -4,7 +4,6 @@
 // low priority:  empty form submit is bringing up required warning on form but is causing a js error in console.
 // low priority:  figure out better way of not-rerendering html after each question
 // low priority:  clear up "question" variable and STORE parameter confusion
-// low priority:  make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
 
 //BONUS FEATURES:
 // deactivate radio buttons after submit
@@ -142,7 +141,7 @@ function renderNextQuestion() {
       <div class="js-options">
       </div>
       <button type = "submit" class="js-submit-answer">Submit</button>
-      <button type = "button" class="js-next-question">Next ~~></button>
+      <button type = "button" class="js-next-question">Next</button>
   </fieldset>
   </form>`);
   $(".q-a-box").html(formAndQuestion);
@@ -155,8 +154,9 @@ function renderOptions() {
   for (let i=0; i < question.options.length; i++)
   {
     $('.js-options').append(`
-        <input type = "radio" name="options" id="option${i+1}" value= "${question.options[i].option}" data-index-number=${i} tabindex ="${i+1}" required> 
-        <label data-index-number=${i} for="option${i+1}"> ${question.options[i].option}</label><br/>`
+    <label data-index-number=${i}>
+    <input type = "radio" name="options" value= "${question.options[i].option}" data-index-number=${i} tabindex ="${i+1}" required> <span>${question.options[i].option}</span>
+    </label><br/>`
     );
     // finds the index of the correct answer
     if (question.options[i].isAnswer === true) {
@@ -171,7 +171,7 @@ function handleSubmitButton() {
   const userAnswer = $("input[name=options]:checked").val();
   const realAnswer = STORE[currentQuestion].options[realAnswerIndex].option;
   event.preventDefault();
-    $(".js-next-question").show(); // show next button only after if alert has been satisfied
+    $(".js-next-question").show();
     $(".js-submit-answer").hide();
     if (userAnswerBool){
       answerIsCorrect (userAnswer);
