@@ -1,15 +1,3 @@
-//TO DO: 
-// high priority: implement A11y
-// low priority:  empty form submit is bringing up required warning on form but is causing a js error in console.
-// low priority:  clear up "question" variable and STORE parameter confusion
-
-//BONUS FEATURES:
-// Add incorrect questions to an array and then output a study guide on results page.
-// Progress bar
-// add text form at start for name. store variable and add to messages
-
-
-
 const STORE = [
     //1
     {
@@ -20,7 +8,6 @@ const STORE = [
         {option: "The lens that originally comes with a camera body as part of a kit", isAnswer: false}, 
         {option: "A zoom lens that only covers the most used focal lengths", isAnswer: false}
       ],
-      // answer: "A fixed focal length lens"
     },
     //2
     {
@@ -31,7 +18,6 @@ const STORE = [
         {option: "6", isAnswer: true}, 
         {option: "8", isAnswer: false}
       ],
-      // answer: "6"
     },
     //3
     {
@@ -42,7 +28,6 @@ const STORE = [
         {option: "A method to measure focal length by using a sundial", isAnswer: false}, 
         {option: "A reminder to take at least 16 pictures when shooting towards harsh sunlight", isAnswer: false}, 
       ],
-      // answer: "A method of estimating correct daylight exposures"
     },
     //4
     {
@@ -53,7 +38,6 @@ const STORE = [
         {option: "International Sensitivity Omnipotence", isAnswer: false}, 
         {option: "None of the above", isAnswer: true}
       ],
-      // answer: "None of the above",
     },
     //5
     {
@@ -64,7 +48,6 @@ const STORE = [
         {option: "The time right around midday", isAnswer: false},
         {option: "Both A and B", isAnswer: true}
       ],
-      // answer: "Both A and B"
     },
 ];
 
@@ -78,18 +61,14 @@ let totalQuestions = STORE.length;
 
 // runs all listeners
 function initiateQuizApp() {
-  console.log('initiateQuizApp ran');
   // listen to "start" and "restart" buttons being clicked
   $('body').on('click','.start-button', function(event) {
-    console.log('Start button clicked and startNewQuiz ran');
     startNewQuiz();
   });
   $('main').on('click', '.js-next-question', event => {
-    console.log('next button clicked and nextStep ran');
     nextStep();
   });
   $('main').on('click', '.js-submit-answer', event => {
-    console.log('submit button clicked and handleSubmitButton ran');
       handleSubmitButton();
   });
 }
@@ -104,11 +83,9 @@ function startNewQuiz() {
 function clearCounterVariables() {
   score = 0;
   currentQuestion = 0;
-  console.log('clearCounterVariables ran');
 }
 
 function renderQuestionPageHtml() {
-  console.log('renderQuestionPageHtml ran');
   const questionHtml = $(
   `<section class="question-page">
     <div class="top-part centered js-feedback">
@@ -125,7 +102,6 @@ function renderQuestionPageHtml() {
 }
 
 function renderNextQuestion() {
-  console.log('renderNextQuestion ran');
   let question= STORE[currentQuestion].question;
   const formAndQuestion = $(`
   <form>
@@ -176,8 +152,7 @@ function handleSubmitButton() {
 }
 
 function answerIsCorrect(userAnswer){
-  console.log('correctAnswer ran');
-  score++; // should probably move this into its own updateScore function so it happens live on submit instead of waiting until next screen
+  score++;
   // make text green for correct answer by inserting class
   $('label:contains(' +  userAnswer + ')').addClass('correct-answer');
   // show Correct! message
@@ -187,31 +162,26 @@ function answerIsCorrect(userAnswer){
     <span>Question:  ${currentQuestion+1} / ${totalQuestions}</span>
     <span>Score:  ${score}</span>`
     );
-  // to do: image
 }
 
 function answerIsWrong(userAnswerIndex, realAnswer){
-  // variable difficulty. can still move back outside later
-  console.log('wrongAnswer ran');
   // make selected wrong answer red
   $('label[data-index-number=' + userAnswerIndex +']').addClass('wrong-answer');
   $('label[data-index-number=' + realAnswerIndex +']').addClass('correct-answer');
   // show "wrong" message" and correct answer
   $('.js-feedback').html(`<h2>Incorrect</h2><p>the answer is "${realAnswer}"</p>`);
-  // to do: image
+  // to do: image of lens shattering
 }
-
 
 function nextStep() { 
   currentQuestion++;
   if (currentQuestion < totalQuestions) {
-    renderQuestionPageHtml(); // It would be more efficient if I did not run this each time, but for the moment it is necessary to get stats to update. I can pull those out and have them rendered on their own or with renderNextQuestion
+    renderQuestionPageHtml();
     renderNextQuestion();
   } else {
     renderResultsPageHtml();
     }
 }
-
 
 function renderResultsPageHtml() {
   scorePercent = Math.round(score/(totalQuestions)*100);
@@ -229,13 +199,6 @@ function renderResultsPageHtml() {
   );
   $("main").html(resultsHtml);
 }
-
-
-
-
-
-
-
 
 
 $(initiateQuizApp);
