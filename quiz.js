@@ -1,16 +1,16 @@
 //TO DO: 
-// when f/2 is selected, 2 and 2.8 both get highlighted as ther wrong answer.
-// deactivate radio buttons after submit
-// no selection error message is not popping up and is causing an undefinied error in console
-// figure out better way of not-rerendering html after each question
-// score++ should happen as an independent function so it updates on stats bar before moving to next questions
-// implement A11y
+// high priority: implement A11y
+// med priority:  score++ should happen as an independent function so it updates on stats bar before moving to next questions
+// low priority:  empty form submit is bringing up required warning on form but is causing a js error in console.
+// low priority:  figure out better way of not-rerendering html after each question
+// low priority:  clear up "question" variable and STORE parameter confusion
+// low priority:  make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
 
 //BONUS FEATURES:
+// deactivate radio buttons after submit
 // Add incorrect questions to an array and then output a study guide on results page.
-// make radio toggles easier to click https://uxmovement.com/forms/ways-to-make-checkboxes-radio-buttons-easier-to-click/
 // Progress bar
-// add text enter at start for name. store variable and add to messages
+// add text form at start for name. store variable and add to messages
 
 
 
@@ -80,7 +80,7 @@ let currentQuestion = 0;
 let totalQuestions = STORE.length;
 
 
-// runs all listener functions
+// runs all listeners
 function initiateQuizApp() {
   console.log('initiateQuizApp ran');
   // listen to "start" and "restart" buttons being clicked
