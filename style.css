@@ -146,3 +146,7 @@ button {
     letter-spacing: 6px;
     border-radius: 25px;
 }
+
+.hide {
+  display: none;
+}
