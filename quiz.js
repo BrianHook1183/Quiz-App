@@ -52,16 +52,16 @@ const STORE = [
 ];
 
 // Global variables
-// dynamic:
+const totalQuestions = STORE.length;
+let realAnswerIndex;
+// for counting:
 let score = 0;
 let currentQuestion = 0;
-// static:
-let totalQuestions = STORE.length;
-
 
 // runs all listeners
 function initiateQuizApp() {
   // listen to "start" and "restart" buttons being clicked
+  // ES6 arrow notation is not being used uniformally here as a reminder of different syntax
   $('body').on('click','.start-button', function(event) {
     startNewQuiz();
   });
