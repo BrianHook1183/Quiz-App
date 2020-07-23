@@ -134,9 +134,13 @@ function renderOptions() {
 }
 
 function handleSubmitButton(event) {
-  const userAnswerIndex = $("input[name=options]:checked").data("index-number");
+  const userSelectedAnswer = $("input[name=options]:checked");
+  if (!userSelectedAnswer.length) {
+    return;
+  }
+  const userAnswerIndex = userSelectedAnswer.data("index-number");
   const userAnswerBool = STORE[currentQuestionIndex].options[userAnswerIndex].isAnswer;
-  const userAnswer = $("input[name=options]:checked").val();
+  const userAnswer = userSelectedAnswer.val();
   const realAnswer = STORE[currentQuestionIndex].options[realAnswerIndex].option;
   event.preventDefault();
   $(".js-next-question").show();
