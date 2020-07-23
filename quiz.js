@@ -52,24 +52,24 @@ const STORE = [
 ];
 
 // Global variables
-// dynamic:
+const totalQuestions = STORE?.length; //new syntax for "optional chaining"
+let realAnswerIndex;
+// for counting:
 let score = 0;
-let currentQuestion = 0;
-// static:
-let totalQuestions = STORE.length;
-
+let currentQuestionIndex = 0;
 
 // runs all listeners
 function initiateQuizApp() {
   // listen to "start" and "restart" buttons being clicked
+  // ES6 arrow notation is not being used uniformally here as a reminder of different syntax
   $('body').on('click','.start-button', function(event) {
     startNewQuiz();
   });
   $('main').on('click', '.js-next-question', event => {
-    nextStep();
+    nextPage();
   });
   $('main').on('click', '.js-submit-answer', event => {
-      handleSubmitButton();
+      handleSubmitButton(event);
   });
 }
 
@@ -82,7 +82,7 @@ function startNewQuiz() {
 
 function clearCounterVariables() {
   score = 0;
-  currentQuestion = 0;
+  currentQuestionIndex = 0;
 }
 
 function renderQuestionPageHtml() {
@@ -91,7 +91,7 @@ function renderQuestionPageHtml() {
     <div class="top-part centered js-feedback">
     </div>
     <div class="js-stats stats">
-      <span>Question:  ${currentQuestion+1} / ${totalQuestions}</span>
+      <span>Question:  ${currentQuestionIndex+1} / ${totalQuestions}</span>
       <span>Score:  ${score}</span>
     </div>
     <div class="q-a-box">
@@ -102,7 +102,7 @@ function renderQuestionPageHtml() {
 }
 
 function renderNextQuestion() {
-  let question= STORE[currentQuestion].question;
+  const question= STORE[currentQuestionIndex].question;
   const formAndQuestion = $(`
   <form>
   <fieldset>
@@ -114,34 +114,37 @@ function renderNextQuestion() {
   </fieldset>
   </form>`);
   $(".q-a-box").html(formAndQuestion);
-  $(".js-next-question").hide(); // hides next button
+  $(".js-next-question").addClass('hide'); // hides next button
   renderOptions();
 }
 
 function renderOptions() {
-  let question= STORE[currentQuestion];
-  for (let i=0; i < question.options.length; i++)
-  {
+  const choices= STORE[currentQuestionIndex].options;
+  choices.forEach((choice, i) => {
     $('.js-options').append(`
     <label data-index-number=${i}>
-    <input type = "radio" name="options" value= "${question.options[i].option}" data-index-number=${i} tabindex ="${i+1}" required> <span>${question.options[i].option}</span>
-    </label><br/>`
-    );
+    <input type = "radio" name="options" value= "${choice.option}" data-index-number=${i} tabindex ="${i+1}" required> <span>${choice.option}</span>
+    </label><br/>
+    `);
     // finds the index of the correct answer
-    if (question.options[i].isAnswer === true) {
+    if (choice.isAnswer === true) {
       realAnswerIndex = i;
-    }
-  }
+    };
+  });
 }
 
-function handleSubmitButton() {
-  const userAnswerIndex = $("input[name=options]:checked").data("index-number");
-  const userAnswerBool = STORE[currentQuestion].options[userAnswerIndex].isAnswer;
-  const userAnswer = $("input[name=options]:checked").val();
-  const realAnswer = STORE[currentQuestion].options[realAnswerIndex].option;
+function handleSubmitButton(event) {
+  const userSelectedAnswer = $("input[name=options]:checked");
+  if (!userSelectedAnswer.length) {
+    return;
+  }
+  const userAnswerIndex = userSelectedAnswer.data("index-number");
+  const userAnswerBool = STORE[currentQuestionIndex].options[userAnswerIndex].isAnswer;
+  const userAnswer = userSelectedAnswer.val();
+  const realAnswer = STORE[currentQuestionIndex].options[realAnswerIndex].option;
   event.preventDefault();
-    $(".js-next-question").show();
-    $(".js-submit-answer").hide();
+  $(".js-next-question").show();
+  $(".js-submit-answer").addClass('hide');
     if (userAnswerBool){
       answerIsCorrect (userAnswer);
     } else {
@@ -159,7 +162,7 @@ function answerIsCorrect(userAnswer){
   $('.js-feedback').html(`<h2>That is Correct!</h2>`);
   // update score if correct to get instant feedback
   $('.js-stats').html(`
-    <span>Question:  ${currentQuestion+1} / ${totalQuestions}</span>
+    <span>Question:  ${currentQuestionIndex+1} / ${totalQuestions}</span>
     <span>Score:  ${score}</span>`
     );
 }
@@ -173,14 +176,15 @@ function answerIsWrong(userAnswerIndex, realAnswer){
   // to do: image of lens shattering
 }
 
-function nextStep() { 
-  currentQuestion++;
-  if (currentQuestion < totalQuestions) {
+// Decides between displaying next question or Results page
+function nextPage() { 
+  currentQuestionIndex++;
+  if (currentQuestionIndex < totalQuestions) {
     renderQuestionPageHtml();
     renderNextQuestion();
   } else {
     renderResultsPageHtml();
-    }
+  }
 }
 
 function renderResultsPageHtml() {
